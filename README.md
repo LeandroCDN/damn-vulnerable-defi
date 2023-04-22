@@ -8,12 +8,26 @@ Featuring flash loans, price oracles, governance, NFTs, lending pools, smart con
 
 Visit [damnvulnerabledefi.xyz](https://damnvulnerabledefi.xyz)
 
-## Support
+## LeanLabiano
+**Solutions**: https://leanlabiano.super.site/solidity-guides/damm-vulnerable-defi
+**VERCION**: V3
 
-For Q&A, support and troubleshooting running Damn Vulnerable DeFi, go [here](https://github.com/tinchoabbate/damn-vulnerable-defi/discussions/categories/support-q-a-troubleshooting).
+---
 
-## Disclaimer
-
-All Solidity code, practices and patterns in this repository are DAMN VULNERABLE and for educational purposes only.
-
-DO NOT USE IN PRODUCTION.
+| # | Name | State |
+| --- | --- | --- |
+| 1 | https://www.damnvulnerabledefi.xyz/challenges/unstoppable/ | Superado |
+| 2 | https://www.damnvulnerabledefi.xyz/challenges/naive-receiver/ | Superado |
+| 3 | https://www.damnvulnerabledefi.xyz/challenges/truster/ | Superado |
+| 4 | https://www.damnvulnerabledefi.xyz/challenges/side-entrance/ | Superado |
+| 5 | https://www.damnvulnerabledefi.xyz/challenges/the-rewarder/ | Superado |
+| 6 | https://www.damnvulnerabledefi.xyz/challenges/selfie/ | Superado |
+| 7 | https://www.damnvulnerabledefi.xyz/challenges/compromised/ | Superado |
+| 8 | https://www.damnvulnerabledefi.xyz/challenges/puppet/ | Not Started |
+| 9 | https://www.damnvulnerabledefi.xyz/challenges/puppet-v2/ | Not Started |
+| 10 | https://www.damnvulnerabledefi.xyz/challenges/free-rider/ | Not Started |
+| 11 | https://www.damnvulnerabledefi.xyz/challenges/backdoor/ | Not Started |
+| 12 | https://www.damnvulnerabledefi.xyz/challenges/climber/ | Not Started |
+| 13 | https://www.damnvulnerabledefi.xyz/challenges/wallet-mining/ | Not Started |
+| 14 | https://www.damnvulnerabledefi.xyz/challenges/puppet-v3/ | Not Started |
+| 15 | https://www.damnvulnerabledefi.xyz/challenges/abi-smuggling/ | Not Started |

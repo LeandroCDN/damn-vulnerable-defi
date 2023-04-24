@@ -23,7 +23,7 @@ Visit [damnvulnerabledefi.xyz](https://damnvulnerabledefi.xyz)
 | 5 | https://www.damnvulnerabledefi.xyz/challenges/the-rewarder/ | Superado |
 | 6 | https://www.damnvulnerabledefi.xyz/challenges/selfie/ | Superado |
 | 7 | https://www.damnvulnerabledefi.xyz/challenges/compromised/ | Superado |
-| 8 | https://www.damnvulnerabledefi.xyz/challenges/puppet/ | Not Started |
+| 8 | https://www.damnvulnerabledefi.xyz/challenges/puppet/ | Superado |
 | 9 | https://www.damnvulnerabledefi.xyz/challenges/puppet-v2/ | Not Started |
 | 10 | https://www.damnvulnerabledefi.xyz/challenges/free-rider/ | Not Started |
 | 11 | https://www.damnvulnerabledefi.xyz/challenges/backdoor/ | Not Started |

